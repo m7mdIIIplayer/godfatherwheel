@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1" />
+  <meta name="theme-color" content="#130e11" />
+  <title>عجلة The Godfather</title>
+  <style>
+    :root {color-scheme:dark; --gold:#edc583;--gold2:#9d6425;--red:#690e1e;--black:#0b0b10;--muted:#b7a99b}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;overflow-x:hidden}
+    body{font-family:Tahoma,Arial,sans-serif;color:#fff6e7;background:#0c0b0d}
+    .app{min-height:100dvh;display:flex;flex-direction:column;position:relative;isolation:isolate;overflow:hidden;
+      background:radial-gradient(ellipse at 40% 40%,rgba(99,17,26,.5),transparent 60%),
+      linear-gradient(115deg,rgba(12,9,11,.82) 27%,rgba(10,10,12,.5) 65%,rgba(10,7,7,.85)),
+      url('./godfather_wheel_bg.png') right 28%/auto 105% no-repeat,#0b0a0a}
+    .app:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#0a090c 3%,transparent 35%,rgba(5,4,7,.28) 83%,#0a090d 100%);pointer-events:none}
+    .header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:clamp(12px,2.3vh,24px) clamp(16px,3vw,40px);z-index:1}
+    .brand{color:var(--gold);font:700 clamp(16px,2.7vw,26px) Georgia,serif;direction:ltr;letter-spacing:1px;text-shadow:0 2px 14px #000}
+    .brand small{display:block;color:#d4c8b7;letter-spacing:3px;font:400 9px Arial,sans-serif;text-align:center;margin-top:3px}
+    .tag{font-size:clamp(10px,1.8vw,13px);padding:9px 13px;border:1px solid #b28c4a80;background:#151015bb;border-radius:60px;color:#f4dcaf}
+    .main{flex:1;max-width:1280px;width:100%;margin:auto;display:grid;grid-template-columns:minmax(240px,1fr) minmax(310px,1.35fr) minmax(150px,.8fr);align-items:center;gap:clamp(5px,2vw,30px);padding:5px clamp(8px,3vw,40px)}
+    .intro{text-align:right;align-self:center;max-width:320px}.eyebrow{font-size:11px;color:#d3af68;letter-spacing:3px;direction:ltr;text-align:right}
+    h1{font-size:clamp(26px,4vw,58px);line-height:1.22;margin:12px 0;color:#ffe1aa;text-shadow:0 4px 20px #000}
+    .intro p{line-height:1.95;color:#ded0c1;font-size:clamp(12px,1.4vw,16px)}
+    .mini{margin:16px 0 0;padding:10px 12px;border-right:2px solid #ad7944;color:#e5c99d;background:#180f13a8;font-size:12px;line-height:1.8}
+    .center{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;gap:12px}
+    .wheel-wrap{width:min(100%,min(56vh,530px));aspect-ratio:1;position:relative;filter:drop-shadow(0 0 12px #b8824c36) drop-shadow(0 18px 30px #000)}
+    .wheel-outer{width:100%;height:100%;padding:3.3%;border-radius:50%;border:2px solid #d0a15b;
+      box-shadow:inset 0 0 0 4px #1b1613,inset 0 0 0 6px #624627,0 0 0 4px #120e0d,0 0 0 6px #8c6337;background:#100d0e;position:relative}
+    .wheel-outer:before{content:'';position:absolute;inset:1.1%;border-radius:50%;border:2px dotted #e2b67466;pointer-events:none;z-index:2}
+    .wheel{border-radius:50%;width:100%;height:100%;position:relative;overflow:hidden;
+      background:repeating-conic-gradient(from 0deg,#680d1e 0 30deg,#16151a 30deg 60deg);
+      border:4px solid #a47642;transition:transform 6.5s cubic-bezier(.12,.83,.18,1)}
+    .wheel:after{content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 28% 20%,#fff3 0,transparent 32%),radial-gradient(circle,#0000 50%,#0009 100%);box-shadow:inset 0 0 0 1px #fbe7ac55}
+    .slice-label{position:absolute;inset:0;transform:rotate(var(--angle));pointer-events:none;text-align:center;font-family:Tahoma,Arial,sans-serif}
+    .slice-label span{position:absolute;top:12%;left:50%;transform:translateX(-50%);width:23%;font-size:clamp(8px,1.4vw,16px);font-weight:900;line-height:1.2;white-space:nowrap;color:#fbe7bf;text-shadow:0 2px 5px #000}
+    .slice-label span.bonus{font-family:Georgia,serif;color:#ffe4a5}
+    .slice-label span.cash{color:#f8d18e;font-size:clamp(8px,1.35vw,15px)}
+    .slice-label span.jackpot{color:#ffdb79;font-size:clamp(8px,1.42vw,16px);font-family:Georgia,serif}
+    .slice-label span.inactive::after{content:'0%';display:block;font:600 clamp(7px,1vw,10px) Arial,sans-serif;color:#dfc6a4;margin-top:3px;opacity:.9}
+    @media(max-width:480px){.slice-label span.cash,.slice-label span.jackpot{font-size:clamp(8px,2.5vw,12px)}.slice-label span.inactive::after{font-size:8px;margin-top:1px}}
+    .pointer{position:absolute;z-index:7;top:-3%;left:50%;transform:translateX(-50%);width:0;height:0;border-right:clamp(11px,1.7vw,21px) solid transparent;border-left:clamp(11px,1.7vw,21px) solid transparent;border-top:clamp(28px,4vw,50px) solid #f0bf64;filter:drop-shadow(0 3px 3px #000);}
+    .hub{position:absolute;inset:37.5%;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle,#221315,#0a0a0d);border:4px solid #d8ad66;box-shadow:0 0 0 6px #160d0a,0 0 22px #000;z-index:5;color:#e4bf7b;text-align:center;font:700 clamp(8px,1.5vw,17px) Georgia,serif;direction:ltr;letter-spacing:-.4px}
+    .spin{appearance:none;border:1px solid #e7b15f;background:linear-gradient(130deg,#822235,#3c0916);color:#ffe5ab;
+      box-shadow:inset 0 1px 0 #f1c97580,0 8px 24px #000a;border-radius:12px;padding:13px 30px;min-width:190px;font-weight:900;font-size:clamp(15px,2.4vw,22px);cursor:pointer}
+    .spin:active{transform:scale(.98)}.spin:disabled{opacity:.5;cursor:default}
+    .status{min-height:25px;color:#d4c2ac;font-size:clamp(12px,1.8vw,16px);text-align:center;line-height:1.7;padding:0 12px}
+    .side{align-self:center;display:flex;flex-direction:column;gap:10px}
+    .feature{border:1px solid #88634377;border-radius:12px;padding:14px 12px;background:#120f13d9;backdrop-filter:blur(4px);color:#f2d8a8;text-align:center}
+    .feature strong{display:block;font:700 24px Georgia,serif;direction:ltr;margin-bottom:5px}.feature span{font-size:12px;color:#d8c5ae}
+    .footer{padding:10px 15px 15px;text-align:center;color:#bba993;font-size:clamp(10px,1.3vw,12px);line-height:1.6;background:#0b090bcc}
+    @media(max-width:850px){.main{grid-template-columns:1fr;gap:7px;justify-items:center}.intro{text-align:center;max-width:680px}.intro h1{font-size:28px;margin:3px 0}.intro p{margin:4px 0;font-size:12px}.eyebrow{text-align:center}.mini{display:none}.side{flex-direction:row;width:100%;max-width:500px;justify-content:center}.feature{flex:1;padding:7px}.feature strong{font-size:17px}.center{width:100%;gap:10px}.wheel-wrap{width:min(80vw,43dvh,430px)}.app{background-size:auto 95%;background-position:right top}.header{padding:10px 14px}.footer{padding:8px}}
+    @media (max-height:500px) and (orientation:landscape){.main{display:grid;grid-template-columns:1fr 1.1fr .68fr;gap:6px}.intro{text-align:right}.intro h1{font-size:23px}.intro p{font-size:10px}.eyebrow{text-align:right}.side{flex-direction:column}.wheel-wrap{width:min(52dvh,300px)}.spin{padding:6px 22px;font-size:14px}.header{padding:6px 12px}.footer{padding:4px;font-size:10px}.feature{padding:4px}.feature strong{font-size:13px}}
+    @media (prefers-reduced-motion:reduce){.wheel{transition-duration:1ms}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header"><div class="brand">THE GODFATHER<small>THE WHEEL OF FORTUNE</small></div><div class="tag">🎩 فرصة تليق بالعراب</div></header>
+  <main class="main">
+    <section class="intro"><div class="eyebrow">AN OFFER YOU CAN'T REFUSE</div><h1>عجلة العرّاب</h1><p>بعض الفرص تستحق المحاولة. لفّ العجلة وشوف شو بيكون نصيبك.</p><div class="mini">كل شحن ناجح بقيمة 1,000 ل.س جديدة أو أكثر يمنحك لفة. المبالغ الظاهرة بالليرة السورية الجديدة. البونص يُطبّق على الشحن القادم خلال 24 ساعة.</div></section>
+    <section class="center">
+      <div class="wheel-wrap"><div class="pointer"></div><div class="wheel-outer"><div id="wheel" class="wheel"><div class="hub">The<br/>Godfather</div></div></div></div>
+      <button id="spin" class="spin" type="button" disabled>🎡 لف العجلة</button>
+      <div role="status" aria-live="polite" class="status" id="status">عم نتحقق من اللفة…</div>
+    </section>
+    <aside class="side"><div class="feature"><strong>5%</strong><span>بونص على الشحن</span></div><div class="feature"><strong>10%</strong><span>بونص مميز</span></div><div class="feature"><strong>HARD LUCK</strong><span>حظ أوفر</span></div></aside>
+  </main>
+  <footer class="footer"></footer>
+</div>
+<script>
+'use strict';
+// Must match GF_WHEEL_SLICES in the server (same index order).
+// Non-active monetary/JACKPOT slices are decorative, clearly marked 0%.
+const prizes=[
+ {label:'5%',kind:'bonus'},
+ {label:'حظ أوفر',kind:'lose'},
+ {label:'500',kind:'cash',inactive:true},
+ {label:'10%',kind:'bonus'},
+ {label:'10,000',kind:'cash',inactive:true},
+ {label:'حظ أوفر',kind:'lose'},
+ {label:'1,000',kind:'cash',inactive:true},
+ {label:'5%',kind:'bonus'},
+ {label:'5,000',kind:'cash',inactive:true},
+ {label:'حظ أوفر',kind:'lose'},
+ {label:'2,500',kind:'cash',inactive:true},
+ {label:'JACKPOT',kind:'jackpot',inactive:true}
+];
+const labels=prizes.map(item=>item.label);
+const wheel=document.getElementById('wheel'),status=document.getElementById('status'),button=document.getElementById('spin');
+prizes.forEach((prize,i)=>{const el=document.createElement('div');el.className='slice-label';el.style.setProperty('--angle',`${i*30+15}deg`);const text=document.createElement('span');text.className=prize.kind+(prize.inactive?' inactive':'');text.textContent=prize.label;el.append(text);wheel.append(el)});
+// Like ALPHA: display-only parameters come from Python after a DB-committed spin.
+// Manipulating URL parameters can only alter this animation, never the balance.
+const params=new URLSearchParams(location.search);
+let outcome=null,started=false;
+function loadResult(){
+ const idxRaw=params.get('targetIndex');
+ const percentRaw=params.get('bonusPercent');
+ const roundId=params.get('roundId');
+ if(idxRaw===null||percentRaw===null||!roundId){
+  status.textContent='افتح العجلة من زر البوت لعرض لفتك المسجلة.';
+  return;
+ }
+ const idx=Number(idxRaw), percent=Number(percentRaw);
+ if(!Number.isInteger(idx)||idx<0||idx>=prizes.length||prizes[idx].inactive||
+    !Number.isInteger(percent)||!(/^[a-f0-9]{16}$/.test(roundId))){
+  status.textContent='بيانات اللفة غير صالحة. افتحها مجدداً من البوت.';
+  return;
+ }
+ const expectedPercent=(idx===0||idx===7)?5:(idx===3)?10:0;
+ if(percent!==expectedPercent){
+  status.textContent='بيانات الجائزة غير متطابقة. افتحها مجدداً من البوت.';
+  return;
+ }
+ outcome={index:idx,kind:expectedPercent?'bonus':'lose',percent:expectedPercent};
+ button.disabled=false;
+ status.textContent='جاهز! اضغط لتدوير العجلة.';
+}
+function finish(){
+ if(!outcome)return;
+ status.textContent=outcome.kind==='bonus' ? `🎁 ربحت بونص ${outcome.percent}% — رح يُطبّق على شحنك القادم خلال 24 ساعة.` : 'حظ أوفر يا زعيم، منستناك بلفة جديدة!';
+ if(navigator.vibrate)navigator.vibrate([35,50,45]);
+}
+button.addEventListener('click',()=>{
+ if(!outcome||started)return;
+ started=true;button.disabled=true;status.textContent='العجلة عم تلف…';
+ const degrees=360*7-(outcome.index*30+15);
+ wheel.addEventListener('transitionend',finish,{once:true});
+ wheel.style.transform=`rotate(${degrees}deg)`;
+ if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)setTimeout(finish,50);
+});
+loadResult();
+</script>
+</body></html>
